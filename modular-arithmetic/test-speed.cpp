@@ -10,10 +10,10 @@ using namespace std::chrono;
 const int Mod = 1e9 + 7;
 const int Limit = 3e8;
 
-typedef MintSimple::mint<Mod> mint;
+using mint = MintSimple::mint<Mod>;
 
 mint calcMint(){
-  mint acc;
+  mint acc(0);
   srand(432);
   for (int i = 0; i < Limit; ++i){
     acc += mint::unsafe(2*i+12345);
