@@ -7,8 +7,16 @@ namespace MintSimple {
     int value;
 
     explicit mint() : value(0){}
-    explicit mint(int x) : value((x % Mod + Mod) % Mod){}
-    explicit mint(long long x) : value((int)(x % Mod + Mod) % Mod){}
+    
+    template<typename T>
+    explicit mint(T x) : value((int)(x < 0 ? x % Mod + Mod : x % Mod)){}
+
+    template<typename T>
+    static inline mint unsafe(T t){
+      mint m;
+      m.value = t;
+      return m;
+    }
 
     inline friend mint operator+(mint a, mint b){
       a.value += b.value;
