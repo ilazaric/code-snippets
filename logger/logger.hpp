@@ -38,7 +38,7 @@
 
 #include <array>
 #include <iostream> // only used for `default_logger`, remove if unnecessary
-#include <source_location>
+#include <string_view>
 
 namespace ivl::logger {
 
@@ -123,11 +123,11 @@ template <fixed_string T> struct name_storage {
 };
 
 // a std::source_location that can be passed via template args
-template <std::uint_least32_t linet, std::uint_least32_t columnt,
+  template <std::uint_least32_t linet, // std::uint_least32_t columnt,
           fixed_string file_namet, fixed_string function_namet>
 struct fixed_source_location {
   constexpr static inline auto line = linet;
-  constexpr static inline auto column = columnt;
+  // constexpr static inline auto column = columnt;
   constexpr static inline auto file_name = file_namet;
   constexpr static inline auto function_name = function_namet;
 };
@@ -159,15 +159,9 @@ template <typename NS, typename CSL> struct logger {
 
 } // namespace ivl::logger
 
-#define LOG(...)                                                               \
-  do {                                                                         \
-    constexpr auto loc = std::source_location::current();                      \
-    constexpr auto filelen = ivl::logger::length(loc.file_name());             \
-    constexpr auto funclen = ivl::logger::length(loc.function_name());         \
-    using csl_t = ivl::logger::fixed_source_location<                          \
-        loc.line(), loc.column(),                                              \
-        ivl::logger::fixed_string<filelen>(loc.file_name()),                   \
-        ivl::logger::fixed_string<funclen>(loc.function_name())>;              \
-    using names_t = ivl::logger::name_storage<#__VA_ARGS__>;                   \
-    logger<names_t, csl_t>::print(__VA_ARGS__);                                \
+#define LOG(...)                                                        \
+  do {                                                                  \
+    using csl_t = ivl::logger::fixed_source_location<__LINE__, __FILE__, __func__>; \
+    using names_t = ivl::logger::name_storage<#__VA_ARGS__>;            \
+    logger<names_t, csl_t>::print(__VA_ARGS__);                         \
   } while (0)
