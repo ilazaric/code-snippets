@@ -13,8 +13,7 @@
 
 #define IVL_GEN(type, suffix)                                                  \
   consteval std::type operator"" _##suffix(unsigned long long arg) { \
-    if (arg < std::numeric_limits<std::type>::min() ||                    \
-        arg > std::numeric_limits<std::type>::max()){                   \
+    if (arg > std::numeric_limits<std::type>::max()){                   \
       throw "ivl::integer_literals type=" #type ", suffix=" #suffix ": value outside of range";    \
     }\
     return static_cast<std::type>(arg);\
