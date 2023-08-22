@@ -24,5 +24,8 @@ namespace ivl {
       return *this;
     }
   };
+
+#define IVL_STREAM_INVOKER2(arg, expr) ::ivl::StreamInvoker{[&](auto&& arg){expr;}}
+#define IVL_STREAM_INVOKER(expr) IVL_STREAM_INVOKER2(arg, expr)
   
 } // namespace ivl
